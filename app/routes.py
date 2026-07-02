@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
-from app.data import inventory
-from app.data import get_next_id
+from app.data import inventory, get_next_id
+from app.external_api import get_product_by_barcode, search_products_by_name
+
 
 
 
@@ -94,4 +95,25 @@ def delete_product(item_id):
         'product': product
     }), 200
 
-               
+@bp.route('/inventory/lookup', methods=['GET'])
+def lookup_product():
+    barcode = request.args.get('barcode')
+    name = request.args.get('name')
+
+
+    if barcode:
+        result = get_product_by_barcode(barcode)
+        if not result:
+            return jsonify({'error':'Product not found'}), 404
+        return jsonify(result), 200
+
+    elif name:
+        results = search_products_by_name(name)
+        return jsonify(results), 200
+
+    else:
+        return jsonify({'error':'Provide a barcode or name query'}), 400
+
+
+     
+
