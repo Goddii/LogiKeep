@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
-from app.data import inventory
-from app.data import get_next_id
-
+from app.data import inventory, get_next_id
+from external.api import 
 
 
 bp = Blueprint('get_inventory', __name__)
@@ -92,4 +91,44 @@ def delete_product(item_id):
     return jsonify({
         'message': 'product deleted successfully',
         'product': product
-    }), 200           
+    }), 200
+
+@bp.route('/inventory/lookup', methods=['GET'])
+def lookup_product():
+    barcode = request.args.get('barcode')
+    name = request.args.get('name')
+
+    if barcode:
+        result = get_product_by_barcode(barcode)
+        if not result:
+            return jsonify({'error':'Product not found'}), 404
+        return jsonify(result), 200
+    elif name:
+        results = search_products_by_name(name)
+        return jsonify(results), 200
+
+    else:
+        return jsonify({'error': 'Provide a barcode or name query'}), 400                           
+
+@bp.route('/inventory/from-api', methods=['POST'])
+def add_from_api():
+    data = request.get_json()
+    if not data or not data.get('barcode'):
+        return jsonify({'error': 'barcode is required'}), 400
+
+    api_data = get_product_by_barcode(data['barcode'])
+    if not api_data:
+        return jsonify({'error': 'Product not found in external API'}), 404 
+
+    new_product = {
+        'id': get_next_id()
+        'product_name': api_data['product_name'],
+        'brand': api_data['brand'],
+        'barcode': data['barcode'],
+        'price': float(data.get('price', 0)),
+        'stock': int(data.get('stock', 0)),
+        'ingredients_text': api_data['ingredients_text']
+    }
+
+    inventory.append(new_product)
+    return jsonify({'message': 'Product added from API', 'product':new_product}), 201       
