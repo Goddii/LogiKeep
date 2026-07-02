@@ -92,4 +92,6 @@ def delete_product(item_id):
     return jsonify({
         'message': 'product deleted successfully',
         'product': product
-    }), 200           
+    }), 200
+
+               
