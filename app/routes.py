@@ -112,8 +112,27 @@ def lookup_product():
         return jsonify(results), 200
 
     else:
-        return jsonify({'error':'Provide a barcode or name query'}), 400
+        return jsonify({'error': 'Provide a barcode or name query'}), 400                           
 
+@bp.route('/inventory/from-api', methods=['POST'])
+def add_from_api():
+    data = request.get_json()
+    if not data or not data.get('barcode'):
+        return jsonify({'error': 'barcode is required'}), 400
 
-     
+    api_data = get_product_by_barcode(data['barcode'])
+    if not api_data:
+        return jsonify({'error': 'Product not found in external API'}), 404 
 
+    new_product = {
+        'id': get_next_id(),
+        'product_name': api_data['product_name'],
+        'brand': api_data['brand'],
+        'barcode': data['barcode'],
+        'price': float(data.get('price', 0)),
+        'stock': int(data.get('stock', 0)),
+        'ingredients_text': api_data['ingredients_text']
+    }
+
+    inventory.append(new_product)
+    return jsonify({'message': 'Product added from API', 'product':new_product}), 201       
