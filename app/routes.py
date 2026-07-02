@@ -78,4 +78,18 @@ def update_product(item_id):
     return jsonify({ 
         'message': 'product updated successfully',
         'product': product
-    }), 200        
+    }), 200 
+
+@bp.route('/inventory/<int:item_id>', methods=['DELETE'])
+def delete_product(item_id):
+    product = next((item for item in inventory if item['id'] == item_id), None)
+
+    if not product:
+        return jsonify({'error':'No product available'}), 404
+
+    inventory.remove(product)
+
+    return jsonify({
+        'message': 'product deleted successfully',
+        'product': product
+    }), 200           
