@@ -3,6 +3,7 @@ import Stats from "./Stats"
 import InventoryToolbar from "./InventoryToolbar"
 import { useEffect, useState } from "react"
 import ProductGrid from "./ProductGrid"
+import AddItemForm from "./AddItemForm"
 
 function Home() {
 
@@ -10,6 +11,8 @@ function Home() {
     const [searchTerm, setSearchTerm] = useState('')
     const [activeFilter, setActiveFilter] = useState('ALL')
     const [sortBy, setSortBy] = useState('name')
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
         fetch('http://127.0.0.1:5004/inventory')
@@ -21,16 +24,20 @@ function Home() {
     const handleUpdateStock = (id, newStock) => {
         if (newStock < 0) return
 
-        fetch(`http://127.0.0.1.5004/inventory/${id}`, {
+        fetch(`http://127.0.0.1:5004/inventory/${id}`, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({stock: newStock})
         })
         .then((res) => res.json())
-        .then(updatedItem => {
-            setItems(prevItems => prevItems.map(item => item.id === id ? updatedItem : item))
+        .then(data => {
+            setItems(prevItems => prevItems.map(item => item.id === id ? data.product : item))
         })
         .catch(err => console.error('Error updating stock: ', err))
+    }
+
+    const handleAddProduct = (newProduct) => {
+        setItems((prevItems) => [...prevItems, newProduct])
     }
 
 
@@ -43,10 +50,11 @@ function Home() {
         ok: items.filter(i => i.stock >= 15).length,
     }
     return(
-        <div>
+        <div className="bg-[#0b0f19]">
             
-            <Navbar />
+            <Navbar onCreateClick={() => setIsModalOpen(true)}/>
             <br />
+            <h1 className="ml-6 p-4">Stock Dashboard</h1>            
             <Stats items={items}/>
             <br />
             <InventoryToolbar 
@@ -63,8 +71,15 @@ function Home() {
                 searchTerm={searchTerm}
                 activeFilter={activeFilter}
                 sortBy={sortBy}
-                // onUpdateStock={handleUpdateStock}
+                onUpdateStock={handleUpdateStock}
             
+            />
+
+            <AddItemForm 
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onAddProduct={handleAddProduct}
+
             />
         </div>
     )
