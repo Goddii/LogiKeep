@@ -2,7 +2,7 @@ import Navbar from "./Navbar"
 import Stats from "./Stats"
 import InventoryToolbar from "./InventoryToolbar"
 import { useEffect, useState } from "react"
-import ProductGrid from "./ProductCard"
+import ProductGrid from "./ProductGrid"
 
 function Home() {
 
@@ -10,6 +10,13 @@ function Home() {
     const [searchTerm, setSearchTerm] = useState('')
     const [activeFilter, setActiveFilter] = useState('ALL')
     const [sortBy, setSortBy] = useState('name')
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:5004/inventory')
+        .then((res) => res.json())
+        .then((data) => setItems(data))
+        .catch((err) => console.error('Error fetching inventory:',err))
+    }, [])
 
     const handleUpdateStock = (id, newStock) => {
         if (newStock < 0) return
@@ -19,7 +26,7 @@ function Home() {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({stock: newStock})
         })
-        .then(res = res.json())
+        .then((res) => res.json())
         .then(updatedItem => {
             setItems(prevItems => prevItems.map(item => item.id === id ? updatedItem : item))
         })
@@ -37,6 +44,7 @@ function Home() {
     }
     return(
         <div>
+            
             <Navbar />
             <br />
             <Stats items={items}/>
