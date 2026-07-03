@@ -50,30 +50,43 @@ function Home() {
         ok: items.filter(i => i.stock >= 15).length,
     }
     return(
-        <div className="bg-[#0b0f19]">
+        <div className="bg-[#0b0f19] min-h-screen">
             
             <Navbar onCreateClick={() => setIsModalOpen(true)}/>
-            <br />
-            <h1 className="ml-6 p-4">Stock Dashboard</h1>            
-            <Stats items={items}/>
-            <br />
-            <InventoryToolbar 
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                activeFilter={activeFilter}
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-                totalCounts={totalCounts}
-            />
-            <br />
-            <ProductGrid 
-                items={items}
-                searchTerm={searchTerm}
-                activeFilter={activeFilter}
-                sortBy={sortBy}
-                onUpdateStock={handleUpdateStock}
+            <div className="mx-auto max-w-7xl px-6 py-8">
+                <h1 className="text-2xl font-bold tracking-tight text-slate-100">Stock Dashboard</h1>
+                <p className="mt-1 text-sm text-slate-500">
+                    Manage and track your retail inventory in real time.
+                </p>
             
-            />
+                <div className="mt-6">
+                     <Stats items={items}/>
+                </div>
+                        
+           
+                <div className="mt-6">
+                    <InventoryToolbar 
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        activeFilter={activeFilter}
+                        sortBy={sortBy}
+                        setSortBy={setSortBy}
+                        totalCounts={totalCounts}
+                    />
+
+                </div>
+
+                <div className="mt-6">
+                    <ProductGrid 
+                        items={items}
+                        searchTerm={searchTerm}
+                        activeFilter={activeFilter}
+                        sortBy={sortBy}
+                        onUpdateStock={handleUpdateStock}
+                    />
+                
+                </div>
+            </div>
 
             <AddItemForm 
                 isOpen={isModalOpen}
