@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductCard from './ProductCard';
 
-export default function ProductGrid({ items, searchTerm, activeFilter, sortBy, onUpdateStock }) {
+export default function ProductGrid({ items, searchTerm, activeFilter, sortBy, onUpdateStock, onViewDetails }) {
   
   // 1. Filter items based on the search input box text
   const searchedItems = items.filter((item) => {
@@ -52,7 +52,8 @@ export default function ProductGrid({ items, searchTerm, activeFilter, sortBy, o
             <ProductCard 
               key={item.id} 
               item={item} 
-              onUpdateStock={onUpdateStock} 
+              onUpdateStock={onUpdateStock}
+              onViewDetails={onViewDetails} 
             />
           ))}
         </div>
