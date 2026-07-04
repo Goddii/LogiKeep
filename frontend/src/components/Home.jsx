@@ -4,6 +4,7 @@ import InventoryToolbar from "./InventoryToolbar"
 import { useEffect, useState } from "react"
 import ProductGrid from "./ProductGrid"
 import AddItemForm from "./AddItemForm"
+import ProductDetailsModal from "./ProductDetailsModal"
 
 function Home() {
 
@@ -13,6 +14,7 @@ function Home() {
     const [sortBy, setSortBy] = useState('name')
 
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [selectedItem, setSelectedItem] = useState(null)
 
     useEffect(() => {
         fetch('http://127.0.0.1:5004/inventory')
@@ -83,6 +85,7 @@ function Home() {
                         activeFilter={activeFilter}
                         sortBy={sortBy}
                         onUpdateStock={handleUpdateStock}
+                        onViewDetails={setSelectedItem}
                     />
                 
                 </div>
@@ -93,6 +96,10 @@ function Home() {
                 onClose={() => setIsModalOpen(false)}
                 onAddProduct={handleAddProduct}
 
+            />
+            <ProductDetailsModal
+                item={selectedItem}
+                onClose={() => setSelectedItem(null)}
             />
         </div>
     )

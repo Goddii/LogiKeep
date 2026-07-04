@@ -1,7 +1,7 @@
 import React from 'react';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 
-export default function ProductCard({ item, onUpdateStock }) {
+export default function ProductCard({ item, onUpdateStock, onViewDetails }) {
   // Determine stock configuration indicators based on the backend data parameters
   const isOutOfStock = item.stock === 0;
   const isLowStock = item.stock > 0 && item.stock < 15;
@@ -96,6 +96,7 @@ export default function ProductCard({ item, onUpdateStock }) {
         
         <button 
           type="button" 
+          onClick={() => onViewDetails(item)}
           className="text-[11px] font-bold text-slate-400 hover:text-amber-400 tracking-wider transition-colors uppercase mt-auto flex items-center gap-x-1"
         >
           Details <span>→</span>
