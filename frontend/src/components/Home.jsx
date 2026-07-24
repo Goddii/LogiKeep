@@ -17,7 +17,7 @@ function Home() {
     const [selectedItem, setSelectedItem] = useState(null)
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5004/inventory')
+        fetch('http://127.0.0.1:5000/inventory')
         .then((res) => res.json())
         .then((data) => setItems(data))
         .catch((err) => console.error('Error fetching inventory:',err))
@@ -26,7 +26,7 @@ function Home() {
     const handleUpdateStock = (id, newStock) => {
         if (newStock < 0) return
 
-        fetch(`http://127.0.0.1:5004/inventory/${id}`, {
+        fetch(`http://127.0.0.1:5000/inventory/${id}`, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({stock: newStock})

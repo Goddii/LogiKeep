@@ -89,7 +89,7 @@ export default function ProductCard({ item, onUpdateStock, onViewDetails }) {
               onClick={() => onUpdateStock(item.id, item.stock + 1)}
               className="px-2.5 py-0.5 text-slate-400 hover:text-emerald-400 font-bold transition-colors select-none text-sm"
             >
-              +
+              + 
             </button>
           </div>
         </div>

@@ -31,7 +31,7 @@ export default function AddItemForm({ isOpen, onClose, onAddProduct }) {
     setApiError('');
     setApiResult(null);
 
-    fetch(`http://127.0.0.1:5004/inventory/lookup?barcode=${barcodeQuery.trim()}`)
+    fetch(`http://127.0.0.1:5000/inventory/lookup?barcode=${barcodeQuery.trim()}`)
       .then((res) => {
         if (!res.ok) throw new Error('Product not found in OpenFoodFacts database.');
         return res.json();
@@ -52,7 +52,7 @@ export default function AddItemForm({ isOpen, onClose, onAddProduct }) {
     // Convert decimal retail price to integer cents for Flask server logic
     const priceInCents = Math.round(parseFloat(apiPrice) * 100);
 
-    fetch('http://127.0.0.1:5004/inventory/from-api', {
+    fetch('http://127.0.0.1:5000/inventory/from-api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -75,7 +75,7 @@ export default function AddItemForm({ isOpen, onClose, onAddProduct }) {
     
     const priceInCents = Math.round(parseFloat(manualForm.price) * 100);
 
-    fetch('http://127.0.0.1:5004/inventory', {
+    fetch('http://127.0.0.1:5000/inventory', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -199,7 +199,7 @@ export default function AddItemForm({ isOpen, onClose, onAddProduct }) {
                   </div>
 
                   <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg text-sm tracking-wide shadow transition-colors mt-2">
-                    📥 Commit & Import to Store Inventory
+                    📥 Commit & Import to Store Inventory 
                   </button>
                 </form>
               )}
