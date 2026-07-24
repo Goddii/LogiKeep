@@ -57,7 +57,7 @@ pipenv install
 pipenv run python app.py
 ```
 
-The API runs on `http://127.0.0.1:5004`.
+The API runs on `http://127.0.0.1:5000`.
 
 ### Frontend
 
@@ -79,11 +79,11 @@ npm install
 npm run dev
 ```
 
-The frontend expects the backend API at `http://127.0.0.1:5004`.
+The frontend expects the backend API at `http://127.0.0.1:5000`.
 
 ### CLI
 
-The CLI in `cli/cli.py` communicates with the Flask backend on `http://127.0.0.1:5004`.
+The CLI in `cli/cli.py` communicates with the Flask backend on `http://127.0.0.1:5000`.
 
 Run it from the project root:
 
